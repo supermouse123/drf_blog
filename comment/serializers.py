@@ -3,7 +3,7 @@
 # @Email   :  344670075@qq.com
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Comment
+from .models import Comment, CommentPoll
 from blog.models import Article
 
 
@@ -13,10 +13,15 @@ class CommentSerializer(serializers.ModelSerializer):
 
     user_id = serializers.StringRelatedField(label='用户id', read_only=True)
     article_id = serializers.StringRelatedField(label='评论文章id', read_only=True)
+    comment_poll = serializers.SerializerMethodField(label='评论点赞数')
+
+    def get_comment_poll(self, instance):
+        count = CommentPoll.objects.filter(comment_id=instance.id).count()
+        return count
 
     class Meta:
         model = Comment
-        fields = ('create_time', 'content', 'user_id', 'article_id')
+        fields = ('create_time', 'content', 'user_id', 'article_id', 'comment_poll')
 
 
 class SubCommentSerializer(serializers.ModelSerializer):
@@ -25,10 +30,15 @@ class SubCommentSerializer(serializers.ModelSerializer):
     user_id = serializers.StringRelatedField(label='用户id', read_only=True)
     article_id = serializers.StringRelatedField(label='评论文章id', read_only=True)
     parents = CommentSerializer(many=True, read_only=True)          #model里指定的related_name字段条件
+    comment_poll = serializers.SerializerMethodField(label='评论点赞数')
+
+    def get_comment_poll(self, instance):
+        count = CommentPoll.objects.filter(comment_id=instance.id).count()
+        return count
 
     class Meta:
         model = Comment
-        fields = ('create_time', 'content', 'user_id', 'article_id', 'parents')
+        fields = ('create_time', 'content', 'user_id', 'article_id', 'parents', 'comment_poll')
 
 
 class CreateCommentSerializer(serializers.ModelSerializer):
@@ -61,6 +71,9 @@ class CreateCommentSerializer(serializers.ModelSerializer):
             validated_data['parent_comment'] = None
 
         return super(CreateCommentSerializer, self).create(validated_data)
+
+
+
 
 
 

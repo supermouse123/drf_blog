@@ -30,7 +30,7 @@ class CommentPoll(models.Model):
     """评论点赞表"""
 
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='点赞时间')
-    article_id = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='评论文章')
+    comment_id = models.ForeignKey(Comment, on_delete=models.CASCADE, verbose_name='点赞的评论')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='点赞用户')
 
     class Meta:
