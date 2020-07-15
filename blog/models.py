@@ -65,3 +65,4 @@ class ArticleDetail(models.Model):
 
 
 
+

@@ -23,4 +23,7 @@ urlpatterns = [
     path('api/', include('blog.urls')),
     path('api/', include('category.urls')),
     path('api/', include('comment.urls')),
-    path(r'^api-auth/', include('rest_framework.urls'))]
+    path('api/', include('user.urls')),
+    path('api/', include('tag.urls')),
+    path(r'^api-auth/', include('rest_framework.urls'))
+]

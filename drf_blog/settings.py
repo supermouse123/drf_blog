@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'blog',
     'category',
     'comment',
+    'user',
+    'tag',
     'mdeditor',
+
 
 ]
 
