@@ -2,8 +2,10 @@
 # @Author  : sunyingqiang
 # @Email   :  344670075@qq.com
 from rest_framework import serializers
+from drf_haystack.serializers import HaystackSerializer
 from django.contrib.auth.models import User
 from .models import Category, Article, ArticleDetail
+from .search_indexes import ArticleIndex
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -99,6 +101,16 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
         return instance
 
 
+class ArticleIndexSerializer(HaystackSerializer):
+    """文章索引结果数据序列化器"""
 
+    object = ArticleSerializer(read_only=True)
+
+    class Meta:
+        index_classes = [ArticleIndex]
+        fields = (
+            'text',  #接收查询关键字
+            'object'  #用于返回查询结果
+        )
 
 

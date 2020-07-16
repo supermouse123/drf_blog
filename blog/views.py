@@ -7,9 +7,10 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django_redis import get_redis_connection
+from drf_haystack.viewsets import HaystackViewSet
 
 from .serializers import ArticleSerializer, CreateArticleSerializer, \
-    ArticleDetailSerializer
+    ArticleDetailSerializer, ArticleIndexSerializer
 from .models import Article, Category
 from utils.custom import CustomPermission, CustomPagination
 
@@ -101,6 +102,12 @@ class ArticlePollView(APIView):
             return Response({'message': '没有这篇文章'})
         return Response({'message': '取消点赞'})
 
+
+class ArticleSearchViewSet(HaystackViewSet):
+    """文章搜索"""
+
+    index_models = [Article]
+    serializer_class = ArticleIndexSerializer
 
 
 
